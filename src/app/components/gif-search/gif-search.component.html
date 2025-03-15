@@ -1,0 +1,45 @@
+<div class="container mt-4">
+    <h2 class="text-center">Пошук GIF</h2>
+  
+    <!-- 🔥 Пошуковий рядок із Angular Material -->
+    <div class="search-box">
+      <mat-form-field class="full-width">
+        <mat-label>Введіть ключове слово...</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (keydown.enter)="searchGifs()">
+        <button mat-icon-button matSuffix (click)="searchGifs()">
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    
+
+    <div *ngIf="noResults" class="no-results">
+        <p>❌ No GIFs found. Try a different search term.</p>
+      </div>
+    
+    <div class="gif-grid">
+      <div class="gif-item" *ngFor="let gif of gifs">
+        <img [src]="gif.images.fixed_height.url" alt="GIF">
+        <div class="gif-info">
+          <h3 class="gif-title">{{ gif.title || 'Невідомо' }}</h3>
+          <p><strong>Автор:</strong> {{ gif.username || 'Невідомий' }}</p>
+          <p><strong>Дата створення:</strong> {{ gif.import_datetime || 'Невідомо' }}</p>
+  
+          <div class="gif-actions">
+            <button mat-raised-button color="primary" (click)="copyLink(gif.images.original.url)">
+              <mat-icon>content_copy</mat-icon> Копіювати посилання
+            </button>
+  
+            <button mat-raised-button color="accent" (click)="downloadGif(gif.images.original.url, gif.title + '.gif')">
+              <mat-icon>download</mat-icon> Завантажити
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="loading-indicator text-center" *ngIf="isLoading">
+      <p>🔄 Завантаження GIF...</p>
+    </div>
+  </div>
+  
